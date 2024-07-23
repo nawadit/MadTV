@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 function NavigationBar() {
+  const [searchedKeywords, setSearchedKeywords] = useState("");
+  function handelKeyDown(event) {
+    if (event.key == "Enter") {
+      //execute search prodecure
+      console.log('search executed via enter key');
+    }
+  }
   return (
     <div className="flex px-4 py-2 justify-evenly align-middle">
       <div className="name">
@@ -19,10 +26,22 @@ function NavigationBar() {
       </div>
       <div className="flex-grow"></div>
       <div className="searchField">
-        <input type="text" className="w-32 rounded-lg px-4 py-1 h-7" placeholder="Search..."/>
+        <input
+          type="text"
+          onKeyDown={handelKeyDown}
+          onChange={(event) => {
+            if (event.target) setSearchedKeywords(event.target.value);
+            console.log(event.target.value);
+          }}
+          className="w-32 rounded-lg px-4 py-1 h-7"
+          placeholder="Search..."
+        />
       </div>
-      <div className="searchLogo">
-      <i class="fa-solid fa-magnifying-glass ml-2"></i>
+      <div
+        className="searchLogo"
+        onClick={(e)=>console.log("search executed via icon")}
+      >
+        <i class="fa-solid fa-magnifying-glass ml-2"></i>
       </div>
     </div>
   );

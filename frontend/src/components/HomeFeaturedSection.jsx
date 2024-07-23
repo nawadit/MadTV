@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FeaturedCards from "./FeaturedCards";
 
 export default function HomeFeaturedSection() {
@@ -16,7 +16,7 @@ export default function HomeFeaturedSection() {
     },
   };
 
-  fetch(url, options)
+  useEffect(()=>{fetch(url, options)
     .then((res) => res.json())
     .then((json) => {
       let propObject = {
@@ -26,7 +26,9 @@ export default function HomeFeaturedSection() {
       };
      setFeaturedMovies({...propObject})
     })
-    .catch((err) => console.error("error:" + err));
+    .catch((err) => console.error("error:" + err));}, [])
+
+  
 
   return (
     <div>
