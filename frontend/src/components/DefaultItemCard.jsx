@@ -1,4 +1,13 @@
 import React from "react";
+/*
+props ={
+image:value,
+rating:value,
+quality:value,
+name:value,
+description:value,
+}
+*/
 
 export default function ItemCard(props) {
   return (
