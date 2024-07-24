@@ -29,6 +29,7 @@ export default function HOmeTvShowsList() {
       <div>
         {moviesList.map((movie) => (
           <ItemCard
+          id={movie.id}
             key={movie.id}
             name={movie.name}
             image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}

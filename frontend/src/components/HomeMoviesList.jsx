@@ -26,16 +26,20 @@ export default function HomeMoviesList() {
 
   return (
     <div>
-      {moviesList.map((movie) => (
-        <ItemCard
-          key={movie.id}
-          name={movie.title}
-          image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-          rating={movie.vote_average}
-          quality={"HD"}
-          description={movie.overview}
-        />
-      ))}
+      {moviesList.map((movie) => {
+        // console.log(`from HomeMoviesList.jsx ${movie.id}`);
+        return (
+          <ItemCard
+            id={movie.id}
+            key={movie.id}
+            name={movie.title}
+            image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+            rating={movie.vote_average}
+            quality={"HD"}
+            description={movie.overview}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -1,22 +1,32 @@
 import React, { useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 
 function NavigationBar() {
   const [searchedKeywords, setSearchedKeywords] = useState("");
-  function handelKeyDown(event) {
+  const navigate = useNavigate();
+
+  function handleKeyDown(event) {
     if (event.key == "Enter") {
-      //execute search prodecure
-      console.log('search executed via enter key');
+      // execute search procedure
+      console.log("search executed via enter key");
+      // redirect("/results?q=");
+      executeSearch();
     }
   }
+
+  function executeSearch() {
+    navigate("/results?q="+searchedKeywords);
+  }
+
   return (
     <div className="flex px-4 py-2 justify-evenly align-middle">
       <div className="name">
-        <a href="./index.html">
+        <a href="./">
           <span className="text-white hidden lg:block">MadTube</span>
         </a>
       </div>
       <div className="logo ml-1">
-        <a href="/index.html">
+        <a href="/">
           <img
             src="src/assets/film-solid.svg"
             alt="site logo"
@@ -28,7 +38,7 @@ function NavigationBar() {
       <div className="searchField">
         <input
           type="text"
-          onKeyDown={handelKeyDown}
+          onKeyDown={handleKeyDown}
           onChange={(event) => {
             if (event.target) setSearchedKeywords(event.target.value);
             console.log(event.target.value);
@@ -39,7 +49,10 @@ function NavigationBar() {
       </div>
       <div
         className="searchLogo"
-        onClick={(e)=>console.log("search executed via icon")}
+        onClick={(e) => {
+          console.log("search executed via icon");
+          executeSearch();
+        }}
       >
         <i class="fa-solid fa-magnifying-glass ml-2"></i>
       </div>

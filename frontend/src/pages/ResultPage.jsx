@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import NavigationBar from "../components/NavigationBar";
 import ItemCard from "../components/DefaultItemCard";
+import { useLocation } from "react-router-dom";
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 export default function ResultPage() {
-  let searchedFor = "Hello";
-  const [results, setResults] = useState([]);
+  const query = useQuery();
+  let searchedFor = query.get("q");
+  const [resultsMovies, setResultsMovies] = useState([]);
+  const [resultsTv, setResultsTv] = useState([]);
+  const [finalResult, setFinalResult] = useState([]);
 
-  const url = `https://api.themoviedb.org/3/search/movie?query=${searchedFor}&include_adult=false&language=en-US&page=1`;
+  const url = `https://api.themoviedb.org/3/search/multi?query=${searchedFor}&include_adult=false&language=en-US&page=1`;
   const options = {
     method: "GET",
     headers: {
@@ -20,10 +28,11 @@ export default function ResultPage() {
     fetch(url, options)
       .then((res) => res.json())
       .then((json) => {
-        setResults([...json.results]);
+        setFinalResult([...json.results]);
       })
       .catch((err) => console.error("error:" + err));
-  }, []);
+  }, [searchedFor]);
+
   return (
     <div className="bg-slate-800">
       <NavigationBar />
@@ -32,25 +41,22 @@ export default function ResultPage() {
           {`Results for "${searchedFor}"`}
         </p>
       </div>
-      <div>
-        {results.map(
-          (movie) =>
-            movie.id &&
-            movie.title &&
-            movie.vote_average &&
-            movie.overview &&
-            movie.poster_path && (
-              <ItemCard
-                key={movie.id}
-                name={movie.title}
-                image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                rating={movie.vote_average}
-                quality={"HD"}
-                description={movie.overview}
-              />
-            )
-        )}
-      </div>
+
+      {finalResult.map(
+        (item) =>
+          item.id &&
+          item.poster_path && (
+            <ItemCard
+              key={item.id}
+              id={item.id}
+              name={item.title || item.name}
+              image={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+              rating={item.vote_average}
+              quality={"HD"}
+              description={item.overview}
+            />
+          )
+      )}
     </div>
   );
 }
