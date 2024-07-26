@@ -4,6 +4,7 @@ import ReactPlayer from "react-player";
 import NavigationBar from "../components/NavigationBar";
 import ItemCard from "../components/DefaultItemCard";
 import DetailsCardForWatchingPage from "../components/DetailsCardForWatchingPage";
+import Footer from "../components/Footer";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -57,7 +58,9 @@ export default function Watch() {
   }, [watching]);
 
   return (
+    
     <div className="bg-slate-800">
+      
       {console.log(`from watch https://vidsrc.to/embed/movie/${watchingImdb.imdb_id}`)}
       <NavigationBar />
       <div className="contentTitle mt-5 pl-4 ">
@@ -86,6 +89,7 @@ export default function Watch() {
           description={watchingImdb.overview}
         />
       </div>
+      <Footer/>
     </div>
   );
 }
