@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import FeaturedCards from "../components/FeaturedCards";
-import ItemCard from "../components/DefaultItemCard";
+import React from "react";
 import NavigationBar from "../components/NavigationBar";
 import HomeFeaturedSection from "../components/HomeFeaturedSection";
 import HomeMoviesList from "../components/HomeMoviesList";
@@ -9,7 +7,7 @@ import Footer from "../components/Footer";
 
 export default function Home() {
   return (
-    <div className="bg-slate-800 h-full">
+    <div className="bg-slate-800 min-h-screen flex flex-col">
       <NavigationBar />
       <HomeFeaturedSection />
       <div className="w-fit h-fit min-h-2 ml-4 mt-5 px-3 bg-white text-gray-900">
@@ -20,7 +18,7 @@ export default function Home() {
         Popular Shows
       </div>
       <HomeTvShowsList />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

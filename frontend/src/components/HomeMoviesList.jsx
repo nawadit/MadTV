@@ -21,25 +21,26 @@ export default function HomeMoviesList() {
       .then((json) => {
         setMoviesList(json.results);
       })
-      .catch((err) => console.error("error:" + err));
+      .catch((err) => console.error("Error: " + err));
   }, []);
+
+  if (moviesList.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      {moviesList.map((movie) => {
-        // console.log(`from HomeMoviesList.jsx ${movie.id}`);
-        return (
-          <ItemCard
-            id={movie.id}
-            key={movie.id}
-            name={movie.title}
-            image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-            rating={movie.vote_average}
-            quality={"HD"}
-            description={movie.overview}
-          />
-        );
-      })}
+      {moviesList.map((movie) => (
+        <ItemCard
+          key={movie.id}
+          id={movie.id}
+          name={movie.title}
+          image={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+          rating={movie.vote_average}
+          quality={"HD"}
+          description={movie.overview}
+        />
+      ))}
     </div>
   );
 }

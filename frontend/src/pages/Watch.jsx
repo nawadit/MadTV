@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactPlayer from "react-player";
 import NavigationBar from "../components/NavigationBar";
@@ -6,43 +6,41 @@ import ItemCard from "../components/DefaultItemCard";
 import DetailsCardForWatchingPage from "../components/DetailsCardForWatchingPage";
 import Footer from "../components/Footer";
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
+// Custom hook to get query parameters
+const useQuery = () => new URLSearchParams(useLocation().search);
+
+// const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+
+const fetchExternalIds = async (mediaType, id) => {
+  const url = `https://api.themoviedb.org/3/${mediaType}/${id}?language=en-US`;
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2NmZDZjNjExODdmM2ZkZWYzODNlM2FjNzU3ZGMzYSIsIm5iZiI6MTcyMTc1MDk2MC4zMDE3MTksInN1YiI6IjY2NzUyZTMxMTJkMDBkOWNkNTViM2U2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.I1xNyMBKskzmBhhoKyNvUxD7ZMxLNNt2FkicmpLWrxk",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch details: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching external IDs for ${mediaType}:`, error);
+    return null;
+  }
 };
 
-export default function Watch() {
+const Watch = () => {
   const query = useQuery();
   const [watching, setWatching] = useState("");
-  const [watchingImdb, setWatchingImdb] = useState("");
+  const [watchingImdb, setWatchingImdb] = useState(null);
 
   useEffect(() => {
     setWatching(query.get("q"));
   }, [query]);
-  //set q to internalID from query string
-
-  const fetchExternalIds = async (mediaType, id) => {
-    const url = `https://api.themoviedb.org/3/${mediaType}/${id}?language=en-US`;
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1Y2NmZDZjNjExODdmM2ZkZWYzODNlM2FjNzU3ZGMzYSIsIm5iZiI6MTcyMTc1MDk2MC4zMDE3MTksInN1YiI6IjY2NzUyZTMxMTJkMDBkOWNkNTViM2U2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.I1xNyMBKskzmBhhoKyNvUxD7ZMxLNNt2FkicmpLWrxk",
-      },
-    };
-
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch details: ${response.statusText}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error(`Error fetching external IDs for ${mediaType}:`, error);
-      return null;
-    }
-  };
 
   useEffect(() => {
     if (watching) {
@@ -57,16 +55,17 @@ export default function Watch() {
     }
   }, [watching]);
 
+  if (!watchingImdb) {
+    return <div>Loading...</div>; // Handle loading state
+  }
+
   return (
-    
-    <div className="bg-slate-800">
-      
-      {console.log(`from watch https://vidsrc.to/embed/movie/${watchingImdb.imdb_id}`)}
+    <div className="bg-slate-800 min-h-screen">
       <NavigationBar />
-      <div className="contentTitle mt-5 pl-4 ">
+      <div className="contentTitle mt-5 pl-4">
         <p className="text-gray-500 text-lg">You're Watching:</p>
         <p className="text-gray-200 text-xl font-semibold -mt-2">
-          {watchingImdb.title||watchingImdb.name}
+          {watchingImdb.title || watchingImdb.name}
         </p>
       </div>
       {watchingImdb && (
@@ -89,7 +88,9 @@ export default function Watch() {
           description={watchingImdb.overview}
         />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
-}
+};
+
+export default Watch;
