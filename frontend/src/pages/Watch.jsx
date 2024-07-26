@@ -1,7 +1,9 @@
-import React, { useEffect, useState , useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import ReactPlayer from "react-player";
 import NavigationBar from "../components/NavigationBar";
+import ItemCard from "../components/DefaultItemCard";
+import DetailsCardForWatchingPage from "../components/DetailsCardForWatchingPage";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -15,9 +17,10 @@ export default function Watch() {
   useEffect(() => {
     setWatching(query.get("q"));
   }, [query]);
+  //set q to internalID from query string
 
   const fetchExternalIds = async (mediaType, id) => {
-    const url = `https://api.themoviedb.org/3/${mediaType}/${id}/external_ids`;
+    const url = `https://api.themoviedb.org/3/${mediaType}/${id}?language=en-US`;
     const options = {
       method: "GET",
       headers: {
@@ -30,10 +33,10 @@ export default function Watch() {
     try {
       const response = await fetch(url, options);
       if (!response.ok) {
-        throw new Error(`Failed to fetch external IDs: ${response.statusText}`);
+        throw new Error(`Failed to fetch details: ${response.statusText}`);
       }
       const data = await response.json();
-      return data.imdb_id;
+      return data;
     } catch (error) {
       console.error(`Error fetching external IDs for ${mediaType}:`, error);
       return null;
@@ -43,11 +46,11 @@ export default function Watch() {
   useEffect(() => {
     if (watching) {
       const fetchIds = async () => {
-        let imdbId = await fetchExternalIds("movie", watching);
-        if (!imdbId) {
-          imdbId = await fetchExternalIds("tv", watching);
+        let contentDetails = await fetchExternalIds("movie", watching);
+        if (!contentDetails) {
+          contentDetails = await fetchExternalIds("tv", watching);
         }
-        setWatchingImdb(imdbId);
+        setWatchingImdb(contentDetails);
       };
       fetchIds();
     }
@@ -55,13 +58,34 @@ export default function Watch() {
 
   return (
     <div className="bg-slate-800">
-      {console.log(`from watch https://vidsrc.to/embed/movie/${watchingImdb}`)}
+      {console.log(`from watch https://vidsrc.to/embed/movie/${watchingImdb.imdb_id}`)}
       <NavigationBar />
+      <div className="contentTitle mt-5 pl-4 ">
+        <p className="text-gray-500 text-lg">You're Watching:</p>
+        <p className="text-gray-200 text-xl font-semibold -mt-2">
+          {watchingImdb.title||watchingImdb.name}
+        </p>
+      </div>
       {watchingImdb && (
-        <video width="320" height="240" controls> 
-        <source src={`https://vidsrc.to/embed/movie/${watchingImdb}`} type="video/mp4" /> 
-        </video>
+        <div className="max-w-full flex justify-center bg-red-800 mt-5 border-2 rounded-lg">
+          <ReactPlayer
+            controls={true}
+            playIcon={true}
+            url={`https://vidsrc.to/embed/movie/${watchingImdb.imdb_id}`}
+          />
+        </div>
       )}
+      <div>
+        <DetailsCardForWatchingPage
+          key={watchingImdb.id}
+          id={watchingImdb.id}
+          name={watchingImdb.title || watchingImdb.name}
+          image={`https://image.tmdb.org/t/p/original${watchingImdb.poster_path}`}
+          rating={watchingImdb.vote_average}
+          quality={"HD"}
+          description={watchingImdb.overview}
+        />
+      </div>
     </div>
   );
 }

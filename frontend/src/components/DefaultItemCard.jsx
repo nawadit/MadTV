@@ -18,7 +18,7 @@ export default function ItemCard(props) {
     setLink("/watch?q=" + props.id);
   }, []);
 
-  console.log(`from ItemCard, id = ${props.id}`);
+  // console.log(`from ItemCard, id = ${props.id}`);
 
   const navigate = useNavigate();
  

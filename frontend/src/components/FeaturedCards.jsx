@@ -12,7 +12,7 @@ export default function FeaturedCards(props) {
   useEffect(() => {
     setLink("/watch?q=" + props.id);
   }, []);
-  console.log("from featured card" + props.id);
+  // console.log("from featured card" + props.id);
   return (
     <a href={link}>
       <div
