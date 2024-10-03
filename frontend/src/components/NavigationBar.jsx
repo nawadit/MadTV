@@ -19,15 +19,15 @@ function NavigationBar() {
   }
 
   return (
-    <div className="flex px-4 py-2 justify-evenly items-center">
+    <div className="flex px-4 py-2 sm:min-h-20 justify-evenly items-center">
       <div className="name">
         <a href="/">
-          <span className="text-white hidden lg:block">MadTube</span>
+          <span className="text-white hidden lg:block sm:text-xl">MadTube</span>
         </a>
       </div>
       <div className="logo ml-1">
         <a href="/">
-          <img src="src/assets/film-solid.svg" alt="site logo" className="w-6" />
+          <img src="src/assets/film-solid.svg" alt="site logo" className="w-6 sm:w-10" />
         </a>
       </div>
       <div className="flex-grow"></div>
@@ -37,7 +37,7 @@ function NavigationBar() {
           value={searchedKeywords}
           onKeyDown={handleKeyDown}
           onChange={(event) => setSearchedKeywords(event.target.value)}
-          className="w-32 rounded-lg px-4 py-1 h-7"
+          className="w-32 sm:w-52 rounded-lg px-4 py-1 h-7 sm:h-10"
           placeholder="Search..."
         />
       </div>

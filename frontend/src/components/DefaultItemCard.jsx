@@ -22,10 +22,10 @@ export default function ItemCard({
   };
 
   return (
-    <div> 
+    <div className="border-2 rounded-lg border-slate-500 border-opacity-80"> 
       {(rating > 0) && (<div className="flex overflow-hidden bg-slate-800 h-fit text-slate-50 m-3 p-1">
       <div
-        className="min-h-40 min-w-28 bg-red-900 "
+        className="min-h-40 min-w-28 bg-red-900  "
         onClick={handleButtonClick}
       >
         <img src={image} alt={`${name} poster`} className="w-full max-h-40" />
@@ -35,12 +35,12 @@ export default function ItemCard({
           {rating && <p className="text-xs self-center">{rating}</p>}
           {quality && <p className="text-xs self-center">{quality}</p>}
         </div>
-        <div>
-          {name && <p className="text-l font-semibold shrink-0">{name}</p>}
+        <div  onClick={handleButtonClick}>
+          {name && <p className="text-l font-semibold shrink-0 hover:cursor-pointer hover:scale-105">{name}</p>}
         </div>
         <div>
           {description && (
-            <p className="overflow-clip max-h-11 flex-1 text-xs">
+            <p className="overflow-clip max-h-5 sm:hidden flex-1 text-xs">
               {description}
             </p>
           )}
@@ -48,7 +48,7 @@ export default function ItemCard({
         <div>
           <button
             onClick={handleButtonClick}
-            className="mt-2 rounded-md p-3 bg-slate-700"
+            className="mt-2 rounded-md p-3 bg-slate-700 hover:scale-105 hover:cursor-pointer"
           >
             Watch now
           </button>

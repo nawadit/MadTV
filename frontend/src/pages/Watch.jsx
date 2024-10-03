@@ -69,12 +69,13 @@ const Watch = () => {
         </p>
       </div>
       {watchingImdb && (
-        <div className="max-w-full flex justify-center bg-red-800 mt-5 border-2 rounded-lg">
-          <ReactPlayer
+        <div className="max-w-full flex justify-center mt-5  rounded-lg">
+          {/* <ReactPlayer
             controls={true}
             playIcon={true}
             url={`https://vidsrc.to/embed/movie/${watchingImdb.imdb_id}`}
-          />
+          /> */}
+          <iframe className="shadow-sm shadow-slate-500" width="400" height="400" src="https://www.youtube-nocookie.com/embed/HmZm8vNHBSU?si=JcQGRrEJkiNivPIX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       )}
       <div>

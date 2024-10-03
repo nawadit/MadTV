@@ -10,11 +10,11 @@ export default function Home() {
     <div className="bg-slate-800 min-h-screen flex flex-col">
       <NavigationBar />
       <HomeFeaturedSection />
-      <div className="w-fit h-fit min-h-2 ml-4 mt-5 px-3 bg-white text-gray-900">
+      <div className="w-fit h-fit min-h-2 ml-4 my-5 px-3 bg-white text-gray-900">
         Popular Movies
       </div>
       <HomeMoviesList />
-      <div className="w-fit h-fit min-h-2 ml-4 mt-5 px-3 bg-white text-gray-900">
+      <div className="w-fit h-fit min-h-2 ml-4 my-5 px-3 bg-white text-gray-900">
         Popular Shows
       </div>
       <HomeTvShowsList />
